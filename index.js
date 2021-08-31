@@ -1,47 +1,44 @@
 //Imports de los módulos
-const fs = require('fs/promises');
-const path = require('path');
+const fs = require("fs/promises");
+const path = require("path");
 
-const fileRoute = path.resolve('users.json')
-const fileRoute2 = path.resolve('hello.txt')
-
-const readFileUsers = async() => {
+const readFileUsers = async () => {
     //Imprimir en consola el arreglo de usuarios
-    try{
-        const data = await fs.readFile(fileRoute, "utf8");
+    const usersPath = path.resolve("users.json");
+
+    try {
+        const data = await fs.readFile(usersPath, "utf8");
         console.log(data);
-    }catch(error){
-        console.log(error)
+    } catch (error) {
+        console.log(error);
     }
- };
+};
 
-
-
-const writeHelloWorld = () => {
+const writeHelloWorld = async () => {
     //Escribir hello world! en el archivo hello.txt
-    fs.writeFile(fileRoute2, "hello world!", (error) => {
-        if(error){
-            console.log("No se ha podido escribir en este archivo");
-        }
-    });
-  
-};
+    const helloPath = path.resolve("hello.txt");
 
-const addUser = async (username) => {
-    //Agregar un usuario en la lista users.json
-      try{
-        await fs.readFile(fileRoute, "utf8");
-        await fs.writeFile(fileRoute,'');
-
-        console.log(fileRoute)
-        
-    }catch(error){
-        console.log(error)
+    try {
+        await fs.writeFile(helloPath, "hello world!");
+    } catch (error) {
+        console.log(error);
     }
 };
 
-//?QUEDO PENDIENTE POR PASAR ESTE ÍTEM 
-//! × Debería de llamar al método writeFile con la lista de usuarios + username como argumento (8 ms)
+const addUser = async(username) => {
+    //Agregar un usuario en la lista users.json
+    const usersPath = path.resolve("users.json");
+
+    try{
+        //Arreglo de usuarios (JSON)
+        const data = await fs.readFile(usersPath, "utf8");
+        const users = JSON.parse(data); //Convertir de JSON a objeto
+        users.push(username);
+        await fs.writeFile(usersPath, JSON.stringify(users));
+    }catch(error){
+        console.log(error);
+    }
+};
 
 
 //No hace falta ejecutar las funciones
